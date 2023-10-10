@@ -1,4 +1,4 @@
-fastap[all]
+fastapi[all]
 openai
 python-dotenv
 pydantic==1.*
