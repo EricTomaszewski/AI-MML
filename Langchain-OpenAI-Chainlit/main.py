@@ -1,3 +1,5 @@
+# https://www.youtube.com/watch?v=xZDB1naRUlk
+
 # TO RUN
 # chainlit run main.py -w
 # -w => chainlit to watch for changes and restart web app automatically

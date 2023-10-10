@@ -9,10 +9,11 @@ import requests
 
 print(
     requests.post(
-        # "http://0.0.0.0:10000",        # gives an error => uses localhost:10000 instead
-        "http://localhost:10000",
+        # "http://0.0.0.0:10000",        # NOT working => gives an error => use localhost:10000 instead
+        # "http://localhost:10000",      # WORKING on the local host
+        "https://researchagentai.onrender.com",      # once deployed on render.com
         json={
-            "query": "what is meta's new product Thread?"
+            "query": "What is the weather in Hatfield, Herts, UK?"
         }
     ).json()
 )

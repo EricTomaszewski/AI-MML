@@ -17,9 +17,9 @@ from typing import TypeAlias
 from bs4 import BeautifulSoup
 import requests
 import json
-# import streamlit as st
+import streamlit as st
 from langchain.schema import SystemMessage
-from fastapi import FastAPI
+# from fastapi import FastAPI
 
 load_dotenv()
 browserless_api_key = os.getenv("BROWSERLESS_API_KEY")
@@ -200,14 +200,14 @@ agent = initialize_agent(
 # streamlit run app.py
 # 4. Use streamlit to create a web app
 # https://streamlit.io/
-'''def main():
+def main():
     st.set_page_config(page_title="AI research agent", page_icon=":bird:")
     
     st.header("AI research agent :bird:")
     query = st.text_input("Research goal")
     
     if query:
-        st.write("Doing research for ", query)
+        st.write("Doing research for: ", query)
         
         result = agent({"input": query})
         
@@ -216,25 +216,4 @@ agent = initialize_agent(
         
         
 if __name__ == '__main__':
-    main()'''
-    
-    
-
-# 5. Set this as an API endpoint via FastAPI
-# https://fastapi.tiangolo.com/
-# to turn this app into API endpoint easily
-# TO RUN IT:
-# uvicorn app:app --host 0.0.0.0 --port 10000   >>> does NOT work on render.com
-# uvicorn app:app --host localhost --port 10000   >>> DOES work on render.com
-app = FastAPI()
-
-class Query(BaseModel):
-    query: str
-    
-@app.post("/")
-def researchAgent(query: Query):
-    query = query.query
-    content = agent({"input": query})
-    actual_content = content['output']
-    return actual_content
-    # return content            # to get all the actual elements e.g. memory
+    main()
