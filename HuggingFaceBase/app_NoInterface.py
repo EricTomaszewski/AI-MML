@@ -1,8 +1,4 @@
-# TO RUN:
-# streamlit run app.py
-
 # https://huggingface.co/tasks
-
 
 # TO LOAD HuggingFace API Token + OpenAI Key
 from dotenv import find_dotenv, load_dotenv
@@ -13,7 +9,7 @@ HUGGINGFACEHUB_API_TOKEN = os.getenv("HUGGINGFACEHUB_API_TOKEN")
 
 
 import requests
-# from transformers import pipeline           # for HuggingFace task 1 but doesn't work in this script => but on Colab - YES
+from transformers import pipeline           # for HuggingFace but doesn't work in this script => but on Colab - YES
 
 
 # Imports for 2. LLM to create the story.
@@ -23,22 +19,42 @@ from langchain.chains import LLMChain
 from langchain.chat_models import ChatOpenAI
 
 
-# Imports for 4. Streamlit web app interface
-import streamlit as st
-
-
 # ============================================
 
 
 # 1. Image2Text
 # HuggingFace => "Interference API"
-def img2text(filename):
-    API_URL = "https://api-inference.huggingface.co/models/Salesforce/blip-image-captioning-base"
-    headers = {"Authorization": f"Bearer {HUGGINGFACEHUB_API_TOKEN}"}
+API_URL = "https://api-inference.huggingface.co/models/Salesforce/blip-image-captioning-base"
+headers = {"Authorization": f"Bearer {HUGGINGFACEHUB_API_TOKEN}"}
+print(headers)
+
+def query(filename):
     with open(filename, "rb") as f:
         data = f.read()
     response = requests.post(API_URL, headers=headers, data=data)
     return response.json()[0]["generated_text"]
+
+output = query("London_panorama.jpg")
+print(output)
+print("")
+
+
+
+# WORKS ON COLAB BUT NOT IN VS Code Studio
+# COLAB: https://colab.research.google.com/drive/1pmbNDGKS6e2egVhvf6GdFyKetKBi-epl#scrollTo=goR5q0bDiHXo
+# HuggingFace => "Use in Transformers"
+# Use a pipeline as a high-level helper
+'''from transformers import pipeline
+
+def img2text(url):
+    image_to_text = pipeline("image-to-text", model="Salesforce/blip-image-captioning-base")
+    
+    text = image_to_text(url)[0]['generated_text']
+    
+    # print(text)
+    return text
+    
+img2text("London_panorama.jpg")'''
 
 
 # ============================================
@@ -62,16 +78,22 @@ def generate_story(scenario):
                          )
     
     story = story_llm.predict(scenario=scenario)
-
+    
+    print("")
+    print(story)
+    print("")
     return story
+
+
+message = generate_story(output)
 
 
 # ============================================
 
 
-# 3. text to speech
 # https://huggingface.co/tasks/text-to-speech
 # https://huggingface.co/espnet/kan-bayashi_ljspeech_vits
+# 3. text to speech
 def text2speech(message):
     API_URL = "https://api-inference.huggingface.co/models/espnet/kan-bayashi_ljspeech_vits"
     headers = {"Authorization": f"Bearer {HUGGINGFACEHUB_API_TOKEN}"}
@@ -86,36 +108,5 @@ def text2speech(message):
     print("")
     print("Finished creating an audio file: audio.flac")
     print("")
-
-
-# ============================================
-
-
-# 4. Streamlit web app interface
-def main():
-    st.set_page_config(page_title="img 2 audio story", page_icon="O")
-    
-    st.header("Turn img into audio story")    
-    uploaded_file = st.file_uploader("Choose an image...", type="jpg")
-    
-    if uploaded_file is not None:
-        print(uploaded_file)
-        bytes_data = uploaded_file.getvalue()
-        with open(uploaded_file.name, "wb") as file:
-            file.write(bytes_data)
-        st.image(uploaded_file, caption="Uploaded Image.",
-                 use_column_width=True)
-        scenario = img2text(uploaded_file.name)
-        story = generate_story(scenario)
-        text2speech(story)
         
-        with st.expander("scenario"):
-            st.write(scenario)
-        with st.expander("story"):
-            st.write(story)
-            
-        st.audio("audio.flac")
-        
-        
-if __name__ == "__main__":
-    main()
+text2speech(message)

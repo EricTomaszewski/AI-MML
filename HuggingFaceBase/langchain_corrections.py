@@ -1,6 +1,7 @@
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
-from langchain.llms import OpenAI
+# from langchain.llms import OpenAI
+from langchain.chat_models import ChatOpenAI
 
 # Create a PromptTemplate object
 prompt_template = PromptTemplate(
@@ -10,7 +11,7 @@ prompt_template = PromptTemplate(
 
 # Create an LLMChain object
 llm_chain = LLMChain(
-    llm=OpenAI(temperature=0, model_name="gpt-3.5-turbo"),
+    llm=ChatOpenAI(temperature=0, model_name="gpt-3.5-turbo"),
     prompt=prompt_template,
 )
 
