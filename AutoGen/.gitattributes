@@ -1,0 +1,27 @@
+# Set text files to use LF line endings on all platforms
+*.py text eol=lf
+*.pyc binary
+*.pyo binary
+*.pyd binary
+__pycache__/* binary
+
+# Ignore common development and build files
+*.pyc -text
+*.pyo -text
+*.pyd -text
+__pycache__/* -text
+*.egg-info/* -text
+*.egg/* -text
+*.log -text
+*.tmp -text
+*.swp -text
+
+# Set configuration and data files to be treated as text
+*.ini text
+*.yaml text
+*.yml text
+*.json text
+*.xml text
+
+# Apply custom merge driver for specific Python-related files
+*.egg-info/entry_points.txt merge=custom-merge-driver
