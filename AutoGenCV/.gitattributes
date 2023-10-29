@@ -1,0 +1,25 @@
+# Set the default line ending style to LF (Unix-style)
+* text=auto
+
+# Declare files that should always use LF line endings
+*.py text eol=lf
+*.pyc binary
+
+# Declare files that should always use CRLF line endings (if needed)
+# *.txt text eol=crlf
+
+# Declare binary files that should not be modified
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.pdf binary
+
+# Ignore files and directories commonly found in Python projects
+__pycache__/* -crlf
+*.egg-info/* -crlf
+*.pyc -crlf
+*.pyo -crlf
+*.pyd -crlf
+*.db -crlf
+*.sqlite3 -crlf
