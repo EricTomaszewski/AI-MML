@@ -22,15 +22,15 @@ import openai
 config_list = [
     {
         "api_type": "open_ai",
-        "api_base": "http://localhost:8000/v1",
+        "api_base": "http://localhost:1234/v1",
         "api_key": "NULL",
         "read_timeout": 300,
-        "max_retries": 10,
+        "max_retries": 50,
         "temperature": 0.1,
     }
 ]
 
-llm_config = {"config_list": config_list, "seed": 42}
+llm_config = {"config_list": config_list}       # , "seed": 42}
 
 
 # If USE_MEMGPT is False, then this example will be the same as the official AutoGen repo
@@ -41,7 +41,7 @@ USE_MEMGPT = False
 
 
 # api keyds for the MemGPT to work
-openai.api_base = "http://localhost:8000/v1"
+openai.api_base = "http://localhost:1234/v1"
 openai.api_key = "NULL"
 
 
@@ -83,4 +83,5 @@ else:
 # Beging the group chat with a message from the user
 user_proxy.initiate_chat(
     coder,
-    message = "Write a function to print number 1 to 10 in Python"
+    message = "Write a function to print number 1 to 10 in Python. Focus on Python code only. Be concise. Remember your previous answers and if you have nothing new to say then write 'TERMINATE'"
+)
